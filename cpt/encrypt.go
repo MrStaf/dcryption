@@ -1,4 +1,4 @@
-package main
+package cpt
 
 import (
 	"crypto/aes"
@@ -6,9 +6,10 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
+	"io/ioutil"
 )
 
-func main() {
+func Encrypt() {
 	fmt.Println("Encryption Program v0.01")
 
 	text := []byte("My Super Secret Code Stuff")
@@ -45,5 +46,10 @@ func main() {
 	// additional data and appends the result to dst, returning the updated
 	// slice. The nonce must be NonceSize() bytes long and unique for all
 	// time, for a given key.
-	fmt.Println(gcm.Seal(nonce, nonce, text, nil))
+	err = ioutil.WriteFile("myfile.data", gcm.Seal(nonce, nonce, text, nil), 0777)
+	// handle this error
+	if err != nil {
+		// print it out
+		fmt.Println(err)
+	}
 }

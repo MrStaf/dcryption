@@ -1,4 +1,4 @@
-package main
+package cpt
 
 import (
 	"crypto/aes"
@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 )
 
-func decrypt() {
+func Decrypt() {
 	fmt.Println("Decryption Program v0.01")
 
 	key := []byte("passphrasewhichneedstobe32bytes!")

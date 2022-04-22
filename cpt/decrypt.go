@@ -7,11 +7,10 @@ import (
 	"io/ioutil"
 )
 
-func Decrypt() {
+func Decrypt(filepath string, key []byte, output string) {
 	fmt.Println("Decryption Program v0.01")
 
-	key := []byte("passphrasewhichneedstobe32bytes!")
-	ciphertext, err := ioutil.ReadFile("myfile.data")
+	ciphertext, err := ioutil.ReadFile(filepath)
 	// if our program was unable to read the file
 	// print out the reason why it can't
 	if err != nil {
@@ -38,5 +37,10 @@ func Decrypt() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(string(plaintext))
+	MkAll(output)
+	// Write to output file
+	err = ioutil.WriteFile(output, plaintext, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

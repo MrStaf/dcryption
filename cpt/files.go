@@ -1,6 +1,8 @@
 package cpt
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 )
 
@@ -23,5 +25,17 @@ func New(Path string, Name string, Key []byte, UUID string) File {
 }
 
 func (file File) ToJSON() string {
-	return fmt.Sprintf(`{"path": "%s", "name": "%s", "key": "%s", "uuid": "%s"}`, file.Path, file.Name, string(file.Key), file.UUID)
+	// Convert key to Base64
+	key_base64 := base64.StdEncoding.EncodeToString(file.Key)
+	return fmt.Sprintf(`{"path": "%s", "name": "%s", "key": "%s", "uuid": "%s"}`, file.Path, file.Name, key_base64, file.UUID)
+}
+
+func ParseJson(json_string string) []File {
+	var list_files []File
+	fmt.Println(json_string)
+	err := json.Unmarshal([]byte(json_string), &list_files)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return list_files
 }

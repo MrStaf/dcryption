@@ -61,13 +61,45 @@ func MkAll(filepath string) {
 func SaveFilesInfos(files []File, output string) {
 	json_string := "["
 	// loop through the files
-	for _, file := range files {
+	for i, file := range files {
 		// convert File to json string
-		json_string += file.ToJSON() + ","
+		if i != len(files)-1 {
+			json_string += file.ToJSON() + ","
+		} else {
+			json_string += file.ToJSON()
+		}
 		// append the json string to the output file
 	}
 	json_string += "]"
 	if err := ioutil.WriteFile(output, []byte(json_string), 0644); err != nil {
 		panic(err)
 	}
+}
+
+func GetFilesInfo(filepath string) []File {
+	// read the file
+	json_string, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		panic(err)
+	}
+	// parse the json string to a slice of File
+	return ParseJson(string(json_string))
+}
+
+func EncryptFolder(path string, output_encrypted string, file_info string) {
+	fmt.Println("Encryption Program v0.01")
+	files := List(path)
+	// Create the output file info
+	output_file_infos := strings.Join([]string{output_encrypted, file_info}, "/")
+	MkAll(output_file_infos)
+	SaveFilesInfos(files, output_file_infos)
+
+	for _, file := range files {
+		// Create output file
+		output := strings.Join([]string{output_encrypted, file.UUID + ".enc"}, "/")
+
+		// Encrypt the file
+		Encrypt(file.Path, file.Key, output)
+	}
+	fmt.Println("Encrypted files in ", path, " to ", output_encrypted, "with ", len(files), " files")
 }

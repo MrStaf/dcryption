@@ -10,8 +10,6 @@ import (
 )
 
 func Encrypt(filepath string, key []byte, output string) {
-	fmt.Println("Encryption Program v0.01")
-
 	// Check if filepath is valid and if it exists
 	if _, err := ioutil.ReadFile(filepath); err != nil {
 		fmt.Println(err)
@@ -60,10 +58,7 @@ func Encrypt(filepath string, key []byte, output string) {
 	// time, for a given key.
 
 	// Open file from file path
-	file, err := ioutil.ReadFile(filepath)
-	if err != nil {
-		fmt.Println(err)
-	}
+	file, _ := ioutil.ReadFile(filepath)
 
 	// Encrypt file
 	ciphertext := gcm.Seal(nonce, nonce, file, nil)

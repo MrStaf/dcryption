@@ -2,6 +2,7 @@ package cpt
 
 import (
 	"crypto/rand"
+	"io/ioutil"
 )
 
 func Generate() []byte {
@@ -11,4 +12,9 @@ func Generate() []byte {
 	rand.Read(key)
 	// Return the key
 	return key
+}
+
+func Save(key []byte, filepath string) {
+	// Save the key to the file
+	ioutil.WriteFile(filepath, key, 0644)
 }
